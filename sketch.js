@@ -27,7 +27,7 @@ function draw() {
 	clear()
 	
 	overlay.clear()
-	overlay.background(255)
+	//overlay.background(255)
 	overlay.stroke(0)
 	
 	background_.spread()
@@ -163,7 +163,7 @@ function mesh(nodeCount,height,width) {
 				overlay.strokeWeight(0.5)
 				//stroke(0)
 				//line(x1,y1,x2,y2)
-				overlay.line(x1-width/4,y1-height/4,x2-width/4,y2-height/4)
+				//overlay.line(x1-width/4,y1-height/4,x2-width/4,y2-height/4)
 			}
 		}
 	}
@@ -307,6 +307,11 @@ function mesh(nodeCount,height,width) {
 			// noStroke()
 			strokeWeight(0.5)
 			triangle(X1,Y1,X2,Y2,X3,Y3)
+			
+			overlay.fill(255)
+			overlay.stroke(0)
+			overlay.strokeWeight(0.5)
+			overlay.triangle(X1-width/4,Y1-height/4,X2-width/4,Y2-height/4,X3-width/4,Y3-height/4)
 		}
 	}
 	
