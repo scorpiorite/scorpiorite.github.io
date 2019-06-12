@@ -53,7 +53,7 @@ function draw() {
 	strokeWeight(4)
 	stroke(255)
 	fill(0)
-	text("Hello world", width/2, height/2)
+	text("Test123", width/2, height/2)
 	strokeWeight(1)
 }
 
