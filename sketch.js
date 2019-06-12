@@ -302,8 +302,10 @@ function mesh(nodeCount,height,width) {
 			
 			var color_ = color('hsb('+ Tcolor +', 100%, 100%)')
 			fill(color_)
-			stroke(color_)
-			strokeWeight(1)
+			// stroke(color_)
+			stroke(0)
+			// noStroke()
+			strokeWeight(0.5)
 			triangle(X1,Y1,X2,Y2,X3,Y3)
 		}
 	}
@@ -409,6 +411,10 @@ node_ = function(mesh,parent,id,posX,posY) {
 		
 		//console.log(Math.cos(dir*Math.PI/180)/dist,Math.sin(dir*Math.PI/180)/dist,dist)
 	}
+}
+
+function board() {
+	
 }
 
 
