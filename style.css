@@ -1,0 +1,40 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	border: 0;
+	/* overflow: hidden; */
+}
+
+body::-webkit-scrollbar { 
+    display: none; 
+}
+
+div {
+	
+}
+
+canvas {
+	border: 0;
+	margin: 0;
+	float: left;
+	position: relative;
+}
+
+#canvasHolder {
+	height: 100vh;
+	width: 100%;
+	background-color: white;
+	position: relative;
+	float: left;
+}
+
+#content {
+	height: 100vh;
+	width: 100%;
+	background-color: pink;
+	position: relative;
+	float: left;
+}
