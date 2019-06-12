@@ -51,8 +51,8 @@ function draw() {
 	textSize(100)
 	textAlign(CENTER,CENTER)
 	strokeWeight(4)
-	stroke(255)
-	fill(0)
+	stroke(0)
+	fill(255)
 	text("Test123", width/2, height/2)
 	strokeWeight(1)
 }
@@ -308,7 +308,7 @@ function mesh(nodeCount,height,width) {
 			strokeWeight(0.5)
 			triangle(X1,Y1,X2,Y2,X3,Y3)
 			
-			overlay.fill(255)
+			overlay.fill(255-Tcolor/1.5)
 			overlay.stroke(0)
 			overlay.strokeWeight(0.5)
 			overlay.triangle(X1-width/4,Y1-height/4,X2-width/4,Y2-height/4,X3-width/4,Y3-height/4)
