@@ -160,7 +160,8 @@ function mesh(nodeCount,height,width) {
 				var y1 = background_.nodes[i].posY
 				var y2 = background_.nodes[i].links[j].posY
 				
-				//overlay.strokeWeight(1)
+				overlay.strokeWeight(0.5)
+				//stroke(0)
 				//line(x1,y1,x2,y2)
 				overlay.line(x1-width/4,y1-height/4,x2-width/4,y2-height/4)
 			}
