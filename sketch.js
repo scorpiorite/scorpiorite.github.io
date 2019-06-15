@@ -16,8 +16,8 @@ function setup() {
 	fill(255,100,100)
 	rect(0,0,width,height)
 	
-	// background_ = new mesh(Math.floor(Math.random()*5 + 25),window.innerHeight,window.innerWidth)
-	background_ = new mesh(25,window.innerHeight,window.innerWidth)
+	background_ = new mesh(Math.floor(Math.random()*5 + 25),window.innerHeight,window.innerWidth)
+	// background_ = new mesh(50,window.innerHeight,window.innerWidth)
 	
 	console.log(background_)
 }
@@ -182,27 +182,38 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	this.fixNodes = function() { // 6-10 ms
+	this.fixNodes = async function() { // 6-10 ms
 		var noIntersects = true
 		var indexes = []
+		var promises = []
 		for(var i = 0; i < this.nodes.length; i++) {
-			for(var j = 0; j < this.nodes[i].links.length; j++) {
-				for(var k = 0; k < this.nodes.length; k++) {
-					for(var n = 0; n < this.nodes[k].links.length; n++) {
-						if(this.doesIntersect(i,this.nodes[i].links[j].id,k,this.nodes[k].links[n].id)) {
-							noIntersects = false
-							var A = this.distBetween(i,this.nodes[i].links[j].id)
-							var B = this.distBetween(k,this.nodes[k].links[n].id)
-							if(A > B) {
-								indexes.push([i,this.nodes[i].links[j].id])
-							} else {
-								indexes.push([k,this.nodes[k].links[n].id])
+			var promise = new Promise(function(resolve,reject) {
+				for(var j = 0; j < background_.nodes[i].links.length; j++) {
+					for(var k = 0; k < background_.nodes.length; k++) {
+						for(var n = 0; n < background_.nodes[k].links.length; n++) {
+							if(background_.doesIntersect(i,background_.nodes[i].links[j].id,k,background_.nodes[k].links[n].id)) {
+								noIntersects = false
+								var A = background_.distBetween(i,background_.nodes[i].links[j].id)
+								var B = background_.distBetween(k,background_.nodes[k].links[n].id)
+								if(A > B) {
+									indexes.push([i,background_.nodes[i].links[j].id])
+								} else {
+									indexes.push([k,background_.nodes[k].links[n].id])
+								}
 							}
 						}
 					}
 				}
-			}
+				resolve(null)
+			})
+			
+			promises.push(promise)
 		}
+		
+		await Promise.all(promises).then(function(values) {
+			//console.log('a')
+		})
+		
 		if(noIntersects) {
 			return
 		} else {
@@ -398,7 +409,7 @@ function board() {
 	
 }
 
-function temp() {
+async function temp() {
 	bench = new benchMark('temp')
 	
 	frameRate(0)
@@ -419,10 +430,11 @@ function temp() {
 		// })
 	}
 	
-	Promise.all(promises).then(function(values) {
+	await Promise.all(promises).then(function(values) {
 		console.log(values)
 		bench.end()
 	})
+	bench.end()
 }
 
 function benchMark(name) {
@@ -430,6 +442,7 @@ function benchMark(name) {
 	this.start = new Date()
 	this.end = function() {
 		console.log(this.name + ": " + (new Date() - this.start))
+		return this.name + ": " + (new Date() - this.start)
 	}
 }
 
