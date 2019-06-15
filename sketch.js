@@ -32,19 +32,20 @@ function draw() {
 	
 	background_.spread()
 	
+	//var bench = new benchMark('fixNodes')
 	background_.fixNodes()
+	//bench.end()
 	
-	background_.colorTriangles(400,400)
+	background_.colorTriangles()
 	
-	stroke(255)
-	background_.drawLinks()
+	//background_.drawLinks()
 	
-	for(var i = 0; i < background_.nodes.length; i++) {
-		fill(255,0,0)
+	// for(var i = 0; i < background_.nodes.length; i++) {
+		// fill(255,0,0)
 		//ellipse(background_.nodes[i].posX,background_.nodes[i].posY,20,20)
-		fill(0,0,0)
+		// fill(0,0,0)
 		//text(i,background_.nodes[i].posX,background_.nodes[i].posY)
-	}
+	// }
 	
 	image(overlay,width/2 - overlayWidth/2,height/2 - overlayHeight/2)
 	
@@ -152,7 +153,7 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	this.drawLinks = function() {
+	this.drawLinks = function() { // 0-1 ms
 		for(var i = 0; i < this.nodes.length; i++) {
 			for(var j = 0; j < this.nodes[i].links.length; j++) {
 				var x1 = background_.nodes[i].posX
@@ -181,71 +182,46 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	this.fixNodes = function() {
-		var count = 0
-		while(true) {
-			
-			if(count > 1000) {
-				break;
-			}
-			
-			count++
-			
-			var noIntersects = true
-			var max = 0
-			var maxIndex = []
-			var indexes = []
-			
-			for(var i = 0; i < this.nodes.length; i++) {
-				for(var j = 0; j < this.nodes[i].links.length; j++) {
-					for(var k = 0; k < this.nodes.length; k++) {
-						for(var n = 0; n < this.nodes[k].links.length; n++) {
-							
-							if(this.doesIntersect(i,this.nodes[i].links[j].id,k,this.nodes[k].links[n].id)) {
-								
-								noIntersects = false
-								
-								var A = this.distBetween(i,this.nodes[i].links[j].id)
-								var B = this.distBetween(k,this.nodes[k].links[n].id)
-								
-								if(A > B) {
-									indexes.push([i,this.nodes[i].links[j].id])
-								} else {
-									indexes.push([k,this.nodes[k].links[n].id])
-								}
+	this.fixNodes = function() { // 6-10 ms
+		var noIntersects = true
+		var indexes = []
+		for(var i = 0; i < this.nodes.length; i++) {
+			for(var j = 0; j < this.nodes[i].links.length; j++) {
+				for(var k = 0; k < this.nodes.length; k++) {
+					for(var n = 0; n < this.nodes[k].links.length; n++) {
+						if(this.doesIntersect(i,this.nodes[i].links[j].id,k,this.nodes[k].links[n].id)) {
+							noIntersects = false
+							var A = this.distBetween(i,this.nodes[i].links[j].id)
+							var B = this.distBetween(k,this.nodes[k].links[n].id)
+							if(A > B) {
+								indexes.push([i,this.nodes[i].links[j].id])
+							} else {
+								indexes.push([k,this.nodes[k].links[n].id])
 							}
 						}
 					}
 				}
 			}
-			
-			if(noIntersects) {
-				break;
-			} else {
-				for(var i = 0; i < indexes.length; i++) {
-					this.nodes[indexes[i][0]].unlink(indexes[i][1])
-				}
+		}
+		if(noIntersects) {
+			return
+		} else {
+			for(var i = 0; i < indexes.length; i++) {
+				this.nodes[indexes[i][0]].unlink(indexes[i][1])
 			}
 		}
-		
 		for(var i = 0; i < this.nodes.length; i++) {
 			for(var j = 0; j < this.nodes.length; j++) {
-				
 				if(!this.nodes[i].isLinked(j) && i != j) {
 					var clear = true
-					
 					for(var k = 0; k < this.nodes.length; k++) {
-						
 						if(!clear) {break;}
-						
 						for(var n = 0; n < this.nodes[k].links.length; n++) {
-							
 							if(this.doesIntersect(i,j,k,this.nodes[k].links[n].id)) {
 								clear = false
 							}
 						}
 					}
-					
 					if(clear) {
 						this.nodes[i].link(j)
 					}
@@ -255,7 +231,7 @@ function mesh(nodeCount,height,width) {
 		this.detectTriangles()
 	}
 	
-	this.detectTriangles = function() {
+	this.detectTriangles = function() { // 0-1 ms
 		this.triangles = []
 		for(var i = 0; i < this.nodes.length; i++) {
 			var node_1 = i
@@ -284,7 +260,7 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	this.colorTriangles = function(limitX,limitY) {
+	this.colorTriangles = function() { // 0-2 ms
 		for(var i = 0; i < this.triangles.length; i++) {
 			
 			var X1 = this.nodes[this.triangles[i][0]].posX
@@ -423,9 +399,11 @@ function board() {
 }
 
 function temp() {
-	var benchStart = new Date()
+	bench = new benchMark('temp')
 	
 	frameRate(0)
+	
+	var promises = []
 	
 	for(var i = 0; i < 1000; i++) {
 		var randomNum = new Promise(
@@ -434,15 +412,25 @@ function temp() {
 			}
 		)
 		
-		randomNum.then(function(fulfilled){
-			console.log(fulfilled)
-		})
+		promises.push(randomNum)
+		
+		// randomNum.then(function(fulfilled){
+			// console.log(fulfilled)
+		// })
 	}
 	
-	var benchEnd = new Date()
-	var benchDiff = benchEnd - benchStart
-	
-	console.log('Time: ' + benchDiff)
+	Promise.all(promises).then(function(values) {
+		console.log(values)
+		bench.end()
+	})
+}
+
+function benchMark(name) {
+	this.name = name
+	this.start = new Date()
+	this.end = function() {
+		console.log(this.name + ": " + (new Date() - this.start))
+	}
 }
 
 
