@@ -422,7 +422,28 @@ function board() {
 	
 }
 
-
+function temp() {
+	var benchStart = new Date()
+	
+	frameRate(0)
+	
+	for(var i = 0; i < 1000; i++) {
+		var randomNum = new Promise(
+			function(resolve,reject) {
+				resolve(Math.floor(Math.random()*100))
+			}
+		)
+		
+		randomNum.then(function(fulfilled){
+			console.log(fulfilled)
+		})
+	}
+	
+	var benchEnd = new Date()
+	var benchDiff = benchEnd - benchStart
+	
+	console.log('Time: ' + benchDiff)
+}
 
 
 
