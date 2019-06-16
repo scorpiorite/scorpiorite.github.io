@@ -6,6 +6,8 @@ function setup() {
 	overlayWidth = width/2
 	overlayHeight = height/2
 	
+	globalOpacity = 0
+	
 	var canvas = createCanvas(width,height)
 	canvas.parent('canvasHolder')
 	
@@ -29,6 +31,8 @@ function draw() {
 	overlay.clear()
 	//overlay.background(255)
 	overlay.stroke(0)
+	
+	globalOpacity += 0.001
 	
 	background_.spread()
 	
@@ -182,7 +186,7 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	this.fixNodes = async function() { // 6-10 ms
+	this.fixNodes = async function() { // 6-10 ms  ---  3-4 ms Async
 		var noIntersects = true
 		var indexes = []
 		var promises = []
@@ -287,12 +291,16 @@ function mesh(nodeCount,height,width) {
 			var a = 10000
 			var Tcolor = Math.floor((a/(area+a))*360)
 			
-			var color_ = color('hsb('+ Tcolor +', 100%, 100%)')
+			var color_ = color('hsba('+ Tcolor +', 100%, 100%, ' + globalOpacity + ')')
 			fill(color_)
 			// stroke(color_)
 			stroke(0)
 			// noStroke()
-			strokeWeight(0.5)
+			if(globalOpacity < 0.5) {
+				strokeWeight(globalOpacity)
+			} else {
+				strokeWeight(0.5)
+			}
 			triangle(X1,Y1,X2,Y2,X3,Y3)
 			
 			overlay.fill(255-Tcolor/1.5)
@@ -302,12 +310,16 @@ function mesh(nodeCount,height,width) {
 		}
 	}
 	
-	for(var i = 0; i < nodeCount; i++) {
+	this.nodes.push(new node_(this,this.nodes,0,0,0))
+	this.nodes.push(new node_(this,this.nodes,1,width-1,0))
+	this.nodes.push(new node_(this,this.nodes,2,0,height-1))
+	this.nodes.push(new node_(this,this.nodes,3,width-1,height-1))
+	for(var i = 4; i < 4+nodeCount; i++) {
 		this.nodes.push(new node_(this,this.nodes,i,
-		Math.random()*width/4 + width/2 - width/8,
-		Math.random()*height/4 + height/2 - height/8
-		// Math.random()*width,
-		// Math.random()*height
+		// Math.random()*width/4 + width/2 - width/8,
+		// Math.random()*height/4 + height/2 - height/8
+		Math.random()*width,
+		Math.random()*height
 		))
 	}
 	
@@ -322,7 +334,7 @@ function mesh(nodeCount,height,width) {
 	this.fixNodes()
 }
 
-node_ = function(mesh,parent,id,posX,posY) {
+node_= function(mesh,parent,id,posX,posY) {
 	this.mesh = mesh
 	this.parent = parent
 	this.id = id
