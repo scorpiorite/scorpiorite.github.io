@@ -298,14 +298,16 @@ function mesh(nodeCount,height,width) {
 			// noStroke()
 			if(globalOpacity < 0.5) {
 				strokeWeight(globalOpacity)
+				overlay.strokeWeight(globalOpacity)
 			} else {
 				strokeWeight(0.5)
+				overlay.strokeWeight(0.5)
 			}
 			triangle(X1,Y1,X2,Y2,X3,Y3)
 			
 			overlay.fill(255-Tcolor/1.5)
-			overlay.stroke(0)
-			overlay.strokeWeight(0.5)
+			//overlay.stroke(0)
+			//overlay.strokeWeight(0.5)
 			overlay.triangle(X1-width/4,Y1-height/4,X2-width/4,Y2-height/4,X3-width/4,Y3-height/4)
 		}
 	}
