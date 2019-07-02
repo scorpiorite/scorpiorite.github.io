@@ -55,10 +55,10 @@ function draw() {
 	
 	textSize(100)
 	textAlign(CENTER,CENTER)
-	strokeWeight(4)
+	strokeWeight(6)
 	stroke(0)
 	fill(255)
-	text("Test123", width/2, height/2)
+	text("Click to go to my Neural Network", width/2, height/2)
 	strokeWeight(1)
 }
 
