@@ -58,7 +58,9 @@ function draw() {
 	strokeWeight(6)
 	stroke(0)
 	fill(255)
+	canvas.getContext('2d').setLineDash([globalOpacity*1000,10000])
 	text("Click to go to my Neural Network", width/2, height/2)
+	canvas.getContext('2d').setLineDash([])
 	strokeWeight(1)
 }
 
