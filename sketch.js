@@ -3,8 +3,8 @@ function setup() {
 	
 	height = window.innerHeight
 	width = window.innerWidth
-	overlayWidth = width/2
-	overlayHeight = height/2
+	overlayWidth = width/1.5
+	overlayHeight = height/1.5
 	
 	globalOpacity = 0
 	
@@ -51,7 +51,9 @@ function draw() {
 		//text(i,background_.nodes[i].posX,background_.nodes[i].posY)
 	// }
 	
-	image(overlay,width/2 - overlayWidth/2,height/2 - overlayHeight/2)
+	// image(overlay,width/2 - overlayWidth/2,height/2 - overlayHeight/2)
+	// image(overlay,overlayWidth - overlayWidth/2,overlayHeight - overlayHeight/2)
+	image(overlay,(width - overlayWidth)/2,(height - overlayHeight)/2)
 	
 	textSize(100)
 	textAlign(CENTER,CENTER)
@@ -59,7 +61,8 @@ function draw() {
 	stroke(0)
 	fill(255)
 	canvas.getContext('2d').setLineDash([globalOpacity*1000,10000])
-	text("Click to go to my Neural Network", width/2, height/2)
+	// text("Click to go to my Neural Network", width/2, height/2)
+	text("Hello World", width/2, height/2)
 	canvas.getContext('2d').setLineDash([])
 	strokeWeight(1)
 }
@@ -295,8 +298,8 @@ function mesh(nodeCount,height,width) {
 			
 			var color_ = color('hsba('+ Tcolor +', 100%, 100%, ' + globalOpacity + ')')
 			fill(color_)
-			// stroke(color_)
-			stroke(0)
+			stroke(color_)
+			// stroke(0)
 			// noStroke()
 			if(globalOpacity < 0.5) {
 				strokeWeight(globalOpacity)
@@ -305,12 +308,16 @@ function mesh(nodeCount,height,width) {
 				strokeWeight(0.5)
 				overlay.strokeWeight(0.5)
 			}
+			
+			//noStroke()
+			overlay.noStroke()
 			triangle(X1,Y1,X2,Y2,X3,Y3)
 			
 			overlay.fill(255-Tcolor/1.5)
-			//overlay.stroke(0)
-			//overlay.strokeWeight(0.5)
-			overlay.triangle(X1-width/4,Y1-height/4,X2-width/4,Y2-height/4,X3-width/4,Y3-height/4)
+			overlay.stroke(0)
+			overlay.strokeWeight(0.5)
+			// overlay.triangle(X1-width/4,Y1-height/4,X2-width/4,Y2-height/4,X3-width/4,Y3-height/4)
+			overlay.triangle(X1-(width - overlayWidth)/2,Y1-(height - overlayHeight)/2,X2-(width - overlayWidth)/2,Y2-(height - overlayHeight)/2,X3-(width - overlayWidth)/2,Y3-(height - overlayHeight)/2)
 		}
 	}
 	
