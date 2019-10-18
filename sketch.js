@@ -469,5 +469,17 @@ function benchMark(name) {
 	}
 }
 
-
+var radial = {
+	plot : function(X,Y) {
+		var rad = X
+		var arc = Y/2
+		var ang = (arc)%(2*Math.PI)
+		var pos = {
+			x : Math.cos(ang)*rad,
+			y : Math.sin(ang)*rad
+		}
+		//console.log(ang)
+		return pos
+	}
+}
 
