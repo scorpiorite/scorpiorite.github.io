@@ -19,7 +19,7 @@ function setup() {
 	rect(0,0,width,height)
 	
 	// background_ = new mesh(Math.floor(Math.random()*5 + 45),window.innerHeight,window.innerWidth)
-	background_ = new mesh(5,window.innerHeight,window.innerWidth)
+	background_ = new mesh(50,window.innerHeight,window.innerWidth)
 	
 	console.log(background_)
 }
@@ -184,7 +184,9 @@ function mesh(nodeCount,height,width) {
 				// this.nodes[i].repel(this.nodes[i].links[j].id)
 			// }
 			for(var j = 0; j < this.nodes.length; j++) {
-				// this.nodes[i].repel(j)
+				if(i != j) {
+					this.nodes[i].repel(this.nodes[j].posX, this.nodes[j].posY)
+				}
 			}
 			// this.nodes[i].repel(0,0)
 			// this.nodes[i].repel(this.width,0)
@@ -362,8 +364,10 @@ node_= function(mesh,parent,id,posX,posY) {
 	this.links = []
 	
 	this.link = function(x) {
-		this.links.push(this.parent[x])
-		this.parent[x].links.push(this)
+		if(!this.isLinked(x)) {
+			this.links.push(this.parent[x])
+			this.parent[x].links.push(this)
+		}
 	}
 	
 	this.unlink = function(x) {
