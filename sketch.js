@@ -18,8 +18,8 @@ function setup() {
 	fill(255,100,100)
 	rect(0,0,width,height)
 	
-	background_ = new mesh(Math.floor(Math.random()*5 + 45),window.innerHeight,window.innerWidth)
-	// background_ = new mesh(50,window.innerHeight,window.innerWidth)
+	// background_ = new mesh(Math.floor(Math.random()*5 + 45),window.innerHeight,window.innerWidth)
+	background_ = new mesh(5,window.innerHeight,window.innerWidth)
 	
 	console.log(background_)
 }
@@ -48,7 +48,7 @@ function draw() {
 		fill(255,0,0)
 		ellipse(background_.nodes[i].posX,background_.nodes[i].posY,20,20)
 		fill(0,0,0)
-		//text(i,background_.nodes[i].posX,background_.nodes[i].posY)
+		text(i,background_.nodes[i].posX,background_.nodes[i].posY)
 	}
 	
 	// image(overlay,width/2 - overlayWidth/2,height/2 - overlayHeight/2)
@@ -180,13 +180,17 @@ function mesh(nodeCount,height,width) {
 	
 	this.spread = function() {
 		for(var i = 0; i < this.nodes.length; i++) {
-			for(var j = 0; j < this.nodes[i].links.length; j++) {
-				this.nodes[i].repel(this.nodes[i].links[j].id)
+			// for(var j = 0; j < this.nodes[i].links.length; j++) {
+				// this.nodes[i].repel(this.nodes[i].links[j].id)
+			// }
+			for(var j = 0; j < this.nodes.length; j++) {
+				// this.nodes[i].repel(j)
 			}
-			this.nodes[i].repel(0,0)
-			this.nodes[i].repel(this.width,0)
-			this.nodes[i].repel(0,this.height)
-			this.nodes[i].repel(this.width,this.height)
+			// this.nodes[i].repel(0,0)
+			// this.nodes[i].repel(this.width,0)
+			// this.nodes[i].repel(0,this.height)
+			// this.nodes[i].repel(this.width,this.height)
+			this.nodes[i].repelWalls()
 			this.nodes[i].move()
 		}
 	}
@@ -325,7 +329,7 @@ function mesh(nodeCount,height,width) {
 	// this.nodes.push(new node_(this,this.nodes,1,width-1,0))
 	// this.nodes.push(new node_(this,this.nodes,2,0,height-1))
 	// this.nodes.push(new node_(this,this.nodes,3,width-1,height-1))
-	for(var i = 0; i < 4+nodeCount; i++) {
+	for(var i = 0; i < nodeCount; i++) {
 		this.nodes.push(new node_(this,this.nodes,i,
 		// Math.random()*width/4 + width/2 - width/8,
 		// Math.random()*height/4 + height/2 - height/8
@@ -425,6 +429,14 @@ node_= function(mesh,parent,id,posX,posY) {
 		this.velY += 30*Math.sin(repelDir*Math.PI/180)/Math.pow(dist,2)
 		
 		//console.log(Math.cos(dir*Math.PI/180)/dist,Math.sin(dir*Math.PI/180)/dist,dist)
+	}
+	
+	this.repelWalls = function() {
+		strength = 30
+		this.velX += strength/Math.pow(this.posX,2)
+		this.velY += strength/Math.pow(this.posY,2)
+		this.velX -= strength/Math.pow(width - this.posX,2)
+		this.velY -= strength/Math.pow(height - this.posY,2)
 	}
 }
 
