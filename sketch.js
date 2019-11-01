@@ -3,8 +3,8 @@ function setup() {
 	
 	height = window.innerHeight
 	width = window.innerWidth
-	overlayWidth = width/1.5
-	overlayHeight = height/1.5
+	overlayWidth = width/1
+	overlayHeight = height/1
 	
 	globalOpacity = 0
 	
@@ -19,7 +19,7 @@ function setup() {
 	rect(0,0,width,height)
 	
 	// background_ = new mesh(Math.floor(Math.random()*5 + 45),window.innerHeight,window.innerWidth)
-	background_ = new mesh(50,window.innerHeight,window.innerWidth)
+	background_ = new mesh(25,window.innerHeight,window.innerWidth)
 	
 	console.log(background_)
 }
@@ -37,19 +37,19 @@ function draw() {
 	background_.spread()
 	
 	//var bench = new benchMark('fixNodes')
-	//background_.fixNodes()
+	background_.fixNodes()
 	//bench.end()
 	
-	//background_.colorTriangles()
+	background_.colorTriangles()
 	
-	//background_.drawLinks()
+	// background_.drawLinks()
 	
-	for(var i = 0; i < background_.nodes.length; i++) {
-		fill(255,0,0)
-		ellipse(background_.nodes[i].posX,background_.nodes[i].posY,20,20)
-		fill(0,0,0)
-		text(i,background_.nodes[i].posX,background_.nodes[i].posY)
-	}
+	// for(var i = 0; i < background_.nodes.length; i++) {
+		// fill(255,0,0)
+		// ellipse(background_.nodes[i].posX,background_.nodes[i].posY,20,20)
+		// fill(0,0,0)
+		// text(i,background_.nodes[i].posX,background_.nodes[i].posY)
+	// }
 	
 	// image(overlay,width/2 - overlayWidth/2,height/2 - overlayHeight/2)
 	// image(overlay,overlayWidth - overlayWidth/2,overlayHeight - overlayHeight/2)
@@ -397,19 +397,19 @@ node_= function(mesh,parent,id,posX,posY) {
 		this.posY += this.velY
 		if(this.posX < 0) {
 			this.posX = 0
-			this.velX = 0
+			this.velX *= -1
 		}
 		if(this.posY < 0) {
 			this.posY = 0
-			this.velY = 0
+			this.velY *= -1
 		}
 		if(this.posX > this.mesh.width) {
 			this.posX = this.mesh.width
-			this.velX = 0
+			this.velX *= -1
 		}
 		if(this.posY > this.mesh.height) {
 			this.posY = this.mesh.height
-			this.velY = 0
+			this.velY *= -1
 		}
 	}
 	
